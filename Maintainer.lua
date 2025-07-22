@@ -13,6 +13,10 @@ local items         = cfg.items
 while true do
   for label, params in pairs(items) do
     local threshold, batchSize = params[1], params[2]
+    if not threshold then
+      goto continue
+    end
+  
 
     -- ask AE2 how many are in the network
     local inNet   = ME.getItemsInNetwork({ label = label })
