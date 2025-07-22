@@ -1,8 +1,7 @@
 -- maintainer.lua: reads config.lua and auto‐crafts below thresholds
 
 local component = require("component")
-local ME        = component.me_interface
-               or error("AE2 ME interface not found!")
+local ME        = component.me_controller or component.me_interface
 
 -- load your settings
 local cfg = require("config")
@@ -13,6 +12,10 @@ local items         = cfg.items
 while true do
   for label, params in pairs(items) do
     local threshold, batchSize = params[1], params[2]
+    if not threshold then
+      goto continue
+    end
+  
 
     -- ask AE2 how many are in the network
     local inNet   = ME.getItemsInNetwork({ label = label })
