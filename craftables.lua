@@ -1,7 +1,7 @@
 -- list_craftables.lua
 
 local component = require("component")
-local ME = component.me_interface or error("ME interface not found")
+local ME = component.me_controller or error("ME interface not found")
 
 local crafts = ME.getCraftables()
 
