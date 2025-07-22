@@ -1,7 +1,7 @@
 -- maintainer.lua: reads config.lua and auto‐crafts below thresholds
 
 local component = require("component")
-local ME        = component.me_interface
+local ME        = component.me_controller
                or error("AE2 ME interface not found!")
 
 -- load your settings
