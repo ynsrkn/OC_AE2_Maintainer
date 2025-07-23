@@ -1,3 +1,5 @@
+Basic knowledge of the mod is assumed
+
 download by using: (press INSERT in the OC terminal to paste)
  ```
 wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/config.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/maintainer.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/craftables.lua
