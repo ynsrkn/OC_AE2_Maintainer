@@ -16,7 +16,16 @@ IMPORTANT:
 
 THE PROGRAM NEEDS AN INTERFACE OR A MECONTROLLER CONNECTED TO AN OC ADAPTER BLOCK.
 
-reboot the computer after changing / updating config.lua
+reboot the (ingame) computer after changing / updating config.lua.
+
+ingame computers parts used (lower quality might work but not guaranteed):
+- GPU tier 3
+- Internet Card (NEEDED TO DOWNLOAD FROM GITHUB)
+- CPU tier 3
+- Memory tier 3.5
+- Hard Disk Drive tier 2
+- EEPROM with Lua BIOS (craft it ingame)
+- OpenOS floppy (craft it ingame)
 
 SIDE NOTE: This is my first time doing something like this, dont expect perfection :3
 
