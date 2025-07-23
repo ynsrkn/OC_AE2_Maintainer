@@ -1,15 +1,12 @@
--- config.lua
--- Edit this to taste
+-- config.lua  (auto-generated)
+-- Adjust sleepInterval, thresholds, batchSizes below.
 
 return {
-  -- how many seconds between full scans
-  sleepInterval = 60,
-
-  -- items to maintain: 
-  --   key   = AE2 label
-  --   value = { threshold, batchSize }
+  sleepInterval = 10,
   items = {
-    ["Iron Ingot"]   = { 32, 8 },
-    -- add more entries here
+    ["Crystaltine Dust"] = {0, 0},
+    ["Crystaltine Ingot"] = {0, 64},
+    ["Bronze Ingot"] = {512, 64},
+    ["Invar Ingot"] = {512, 64},
   },
 }
