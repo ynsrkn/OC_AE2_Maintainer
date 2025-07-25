@@ -21,6 +21,7 @@ else   error("ME proxy has no getCraftables/getAvailableItems") end
 -------------------------------------------------------------------------------
 -- 2) Config-generation settings
 -------------------------------------------------------------------------------
+
 local cfg_path         = "./config.lua"
 local defaultThreshold = 512
 local defaultBatchSize = 64
@@ -28,43 +29,53 @@ local defaultBatchSize = 64
 local function generateConfig()
   local crafts = craftsFetcher()
   local seen   = {}
-  local out    = assert(io.open(cfg_path, "w"))
+  local list   = {}
 
-  -- Boilerplate header
-  out:write([[
--- config.lua  (auto-generated)
--- Adjust sleepInterval, thresholds, batchSizes below.
-
-return {
-  sleepInterval = 60,
-  items = {
-]])
-
-  -- Dump one entry per unique label
+  -- 1) collect unique labels into a flat list
   for _, pattern in ipairs(crafts) do
     local label = pattern.getItemStack().label
     if not seen[label] then
       seen[label] = true
-      out:write(string.format(
-        "    [\"%s\"] = {%d, %d},\n",
-        label:gsub('"','\\"'),
-        defaultThreshold,
-        defaultBatchSize
-      ))
+      table.insert(list, { label, defaultThreshold, defaultBatchSize })
     end
   end
 
-  -- Footer
+  -- 2) sort so output is always in the same order
+  table.sort(list, function(a, b)
+    return a[1] < b[1]
+  end)
+
+  -- 3) write out the config file
+  local out = assert(io.open(cfg_path, "w"))
+
+  -- header
+  out:write([[
+-- config.lua  (auto-generated)
+-- sleepInterval in seconds; items = { { label, threshold, batchSize }, … }
+
+return {
+  sleepInterval = 60,
+  shuffle = true,
+  items = {
+]])
+
+  -- body
+  for _, entry in ipairs(list) do
+    local lab, thr, bs = entry[1], entry[2], entry[3]
+    out:write(string.format(
+      "    { %q, %d, %d },\n",
+      lab, thr, bs
+    ))
+  end
+
+  -- footer
   out:write([[
   },
 }
 ]])
   out:close()
 
-  -- Count how many we wrote
-  local count = 0
-  for _ in pairs(seen) do count = count + 1 end
-  print(("✔ Wrote %d items to %s"):format(count, cfg_path))
+  print(("✔ Wrote %d items to %s"):format(#list, cfg_path))
 end
 
 -- Print available crafts

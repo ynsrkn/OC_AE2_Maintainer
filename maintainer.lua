@@ -12,6 +12,7 @@ local ME = component.proxy(addr)
 local cfg = require("config")
 local sleepInterval = cfg.sleepInterval
 local items         = cfg.items
+local shuffle       = cfg.shuffle
 
 -- craftParser: takes a item with label in a batch of size batchSize
 local function craftParser(labelx, batchSizex)
@@ -23,13 +24,27 @@ local function craftParser(labelx, batchSizex)
     print( ("Cannot craft %s: no pattern found"):format(labelx) )
   end
 end
+
+
+local function shuffleList(list)
+  for i = #list, 2, -1 do
+    local j = math.random(i)
+    list[i], list[j] = list[j], list[i]
+  end
+end
   
 print("Maintainer script started exit with Ctrl+Alt+C")
 print("........................................................")
 -- main loop
 while true do
-  for label, params in pairs(items) do
-    local threshold, batchSize = params[1], params[2]
+  if shuffle then
+    print("shuffle = true, shuffling items")
+    shuffleList(items)
+  end
+
+  
+  for _, entry in  ipairs(items) do
+    local label, threshold, batchSize = entry[1], entry[2], entry[3]
     if not batchSize or batchSize == 0 then
       print(("Skipping %s: no batch size specified"):format(label))
       goto continue
