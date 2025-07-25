@@ -10,7 +10,7 @@ HOW TO USE:
 .\craftables : shows all availible crafts in the AE2 system and gives the option to generate / refresh a config.lua file with all crafts in it with (threshold = defaultThreshold, batchSize = defaultBatchSize).
 default values can be edited inside the file itself with .\edit craftables.lua
 
-.\config : contains a table of all maintained items with the form {["item label"] = {threhsold, batchsize}} and also sleeptimer that dictates how long the program waits until it does another parse.
+.\config : contains an array of all maintained items with the form {"item label", threhsold, batchsize}, sleeptimer that dictates how long the program waits until it does another parse, and a shuffle mode used to enable shuffling of the items choosed for crafting, usefull for ensuring even filling of buffers and for infinite crafting
 
 .\maintainer : executes the program with mentioned settings, will run forever and print out various info to the terminal.
 
