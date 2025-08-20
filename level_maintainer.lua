@@ -22,8 +22,6 @@ end
 
 
 function startMaintainer()    
-    event.listen("interrupted", onInterrupt)
-    
     cycles = 0
     running = true
     interruptReceived = false
@@ -133,6 +131,9 @@ if component.isAvailable("gpu") then
     term.clear()
     print(string.format("Set resolution to %dx%d (max: %dx%d)", targetWidth, targetHeight, maxWidth, maxHeight))
 end
+
+
+event.listen("interrupted", onInterrupt)
 
 -- Reload config to ensure we have the latest settings
 reloadConfig()

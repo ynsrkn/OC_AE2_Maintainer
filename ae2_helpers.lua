@@ -1,4 +1,5 @@
 local component = require("component")
+local computer  = require("computer")
 local fs        = require("filesystem")
 
 colors = {
@@ -78,9 +79,33 @@ local craftablesCacheLoaded = false
 
 function ensureCraftablesCache()
     if not craftablesCacheLoaded then
-        craftablesCache = ME.getCraftables()
+        local startTime = computer.uptime()
+        colorPrint(colors.yellow, "🔄 Loading craftables cache...")
+        
+        craftablesCache = {}
+        local cachedCount = 0
+        
+        -- Query each configured item directly from AE2
+        for i, entry in ipairs(cfg.items) do
+            local itemName = entry[1]
+            local queryStart = computer.uptime()
+            
+            local craftablesList = ME.getCraftables({ label = itemName })
+            local queryTime = computer.uptime() - queryStart
+            
+            if craftablesList and #craftablesList > 0 then
+                local craftable = craftablesList[1] -- Take first match
+                craftablesCache[itemName] = craftable
+                cachedCount = cachedCount + 1
+                colorPrint(colors.yellow, string.format("  [%d/%d] ✓ %s (%.3fs)", i, #cfg.items, itemName, queryTime))
+            else
+                colorPrint(colors.red, string.format("  [%d/%d] ❌ %s (%.3fs) - NOT CRAFTABLE", i, #cfg.items, itemName, queryTime))
+            end
+        end
+        
+        local totalTime = computer.uptime() - startTime
         craftablesCacheLoaded = true
-        colorPrint(colors.cyan, "📚 Loaded craftables cache (" .. #craftablesCache .. " items)")
+        colorPrint(colors.green, string.format("📚 Cache loaded: %d/%d items in %.1fs total", cachedCount, #cfg.items, totalTime))
     end
     return craftablesCache
 end
@@ -147,13 +172,12 @@ function checkAllThresholds()
 end
 
 function findCraftable(itemName)
-    local craftables = ensureCraftablesCache()
+    ensureCraftablesCache()
     
-    for i, craftable in ipairs(craftables) do
+    local craftable = craftablesCache[itemName]
+    if craftable then
         local itemStack = craftable.getItemStack()
-        if itemStack and (itemStack.name == itemName or itemStack.label == itemName) then
-            return craftable, itemStack
-        end
+        return craftable, itemStack
     end
     
     return nil, nil
@@ -162,6 +186,10 @@ end
 
 function startCraft(itemName, amount, currentCycle)    
     local craftable = findCraftable(itemName)
+    if not craftable then
+        return nil, "Item not craftable: " .. itemName
+    end
+    
     local requestTracker = craftable.request(amount)
     
     if not requestTracker then
@@ -191,7 +219,7 @@ function startCraft(itemName, amount, currentCycle)
 end
 
 function isItemCurrentlyBeingCrafted(itemName)
-        for craftId, craft in pairs(activeCrafts) do
+    for craftId, craft in pairs(activeCrafts) do
         if craft.itemName == itemName then
             return true, craftId
         end
