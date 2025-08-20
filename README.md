@@ -2,6 +2,7 @@
 
 
 
+HUGE shoutout to @Yuni for contributing his improved gui and maintainer functionality to this repo
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
@@ -22,7 +23,7 @@ IMPORTANT:
 
 THE PROGRAM NEEDS AN INTERFACE OR A MECONTROLLER CONNECTED TO AN OC ADAPTER BLOCK.
 
-reboot the (ingame) computer after changing / updating config.lua.
+No need to reboot the oc-computer after updating config.lua anymore
 
 ingame computers parts used (lower quality might work but not guaranteed):
 - GPU tier 3
