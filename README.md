@@ -2,7 +2,7 @@
 
 
 
-HUGE shoutout to @Yuni for contributing his improved gui and maintainer functionality to this repo
+HUGE shoutout to [@Yuni](https://github.com/ynsrkn) for contributing his improved gui and maintainer functionality to this repo
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
