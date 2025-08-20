@@ -126,12 +126,12 @@ if component.isAvailable("gpu") then
     local gpu = component.gpu
     local maxWidth, maxHeight = gpu.maxResolution()
     
-    local targetWidth = math.min(120, maxWidth)
-    local targetHeight = math.min(35, maxHeight)
+    local targetWidth = math.min(cfg.resolution.maxWidth, maxWidth)
+    local targetHeight = math.min(cfg.resolution.maxHeight, maxHeight)
     
     gpu.setResolution(targetWidth, targetHeight)
     term.clear()
-    print(string.format("🖥️  Set resolution to %dx%d (max: %dx%d)", targetWidth, targetHeight, maxWidth, maxHeight))
+    print(string.format("Set resolution to %dx%d (max: %dx%d)", targetWidth, targetHeight, maxWidth, maxHeight))
 end
 
 -- Reload config to ensure we have the latest settings

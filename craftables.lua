@@ -51,12 +51,21 @@ local function generateConfig()
   -- header
   out:write([[
 -- config.lua  (auto-generated)
--- sleepInterval in seconds; items = { { label, threshold, batchSize }, … }
+-- sleepInterval in seconds; 
+-- shuffle: randomize craft order  
+-- requestTimeoutCycles: max cycles before timing out crafts
+-- resolution: terminal size limits (maxWidth, maxHeight)
+-- items: { { label, threshold, batchSize }, … }
 
 return {
   sleepInterval = 60,
   shuffle = true,
-  items = {
+  requestTimeoutCycles = 3,
+  resolution = {
+    maxWidth = 120,
+    maxHeight = 35
+  },
+  items = { 
 ]])
 
   -- body
