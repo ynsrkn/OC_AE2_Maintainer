@@ -2,7 +2,7 @@
 
 
 
-HUGE shoutout to [@Yuni](https://github.com/ynsrkn) for contributing his improved gui and maintainer functionality to this repo.
+HUGE shoutout to [@Yunis](https://github.com/ynsrkn) for contributing his improved gui and maintainer functionality to this repo.
 
 
 Basic knowledge of the mod is assumed
