@@ -166,7 +166,6 @@ function checkAllThresholds()
                 })
             end
         end
-    
     end
     
     return needsCraftingList
@@ -220,7 +219,7 @@ function startCraft(itemName, amount, currentCycle)
 end
 
 function isItemCurrentlyBeingCrafted(itemName)
-        for craftId, craft in pairs(activeCrafts) do
+    for craftId, craft in pairs(activeCrafts) do
         if craft.itemName == itemName then
             return true, craftId
         end
