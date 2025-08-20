@@ -3,9 +3,9 @@ Forked from https://github.com/chrisdk1234/OC_AE2_Maintainer
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
- ```
-wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/config.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/maintainer.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/craftables.lua
- ```
+```
+wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/config.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/ae2_helpers.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/level_maintainer.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/craftables.lua
+```
 
 HOW TO USE:
 
