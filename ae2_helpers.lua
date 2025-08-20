@@ -27,6 +27,8 @@ local config = require("config")
 cfg = {
     sleepInterval = config.sleepInterval or 60,
     shuffle = config.shuffle or false,
+    requestTimeoutCycles = config.requestTimeoutCycles or 3,
+    resolution = config.resolution or { maxWidth = 120, maxHeight = 35 },
     items = config.items or {}
 }
 
@@ -35,12 +37,13 @@ if not package.loaded["ae2_helpers"] then
     colorPrint(colors.cyan, "📋 Loaded configuration:")
     colorPrint(colors.cyan, "   Sleep Interval: " .. cfg.sleepInterval .. "s")
     colorPrint(colors.cyan, "   Shuffle Items: " .. tostring(cfg.shuffle))
+    colorPrint(colors.cyan, "   Timeout Cycles: " .. cfg.requestTimeoutCycles)
+    colorPrint(colors.cyan, "   Resolution: " .. cfg.resolution.maxWidth .. "x" .. cfg.resolution.maxHeight)
     colorPrint(colors.cyan, "   Configured Items: " .. #cfg.items)
 end
 
 -- Active craft requests tracking
 activeCrafts = {}
-local MAX_CYCLES = 3
 
 
 function reloadConfig()
@@ -48,6 +51,8 @@ function reloadConfig()
     config = require("config")
     cfg.sleepInterval = config.sleepInterval or 60
     cfg.shuffle = config.shuffle or false
+    cfg.requestTimeoutCycles = config.requestTimeoutCycles or 3
+    cfg.resolution = config.resolution or { maxWidth = 120, maxHeight = 35 }
     cfg.items = config.items or {}
     colorPrint(colors.green, "🔄 Configuration reloaded")
     return cfg
@@ -155,49 +160,19 @@ function findCraftable(itemName)
 end
 
 
-function startCraft(itemName, amount, baselineBusyCpus, currentCycle)
+function startCraft(itemName, amount, currentCycle)
     amount = amount or 1
-    baselineBusyCpus = baselineBusyCpus or 0
     
     local craftable = findCraftable(itemName)
     if not craftable then
         return nil, "Item not craftable: " .. itemName
     end
 
-    local success, requestTracker = pcall(function()
-        return craftable.request(amount)
-    end)
-    
-    if not success then
-        return nil, "AE2 request failed: " .. tostring(requestTracker)
+    local requestTracker = craftable.request(amount)
+  
+    if not requestTracker or requestTracker.isDone() == nil then
+        return nil, "Craft failed to start"
     end
-    
-    -- Check if craft ended immediately
-    if requestTracker.isDone() or requestTracker.isCanceled() then
-        return nil, "Craft ended immediately"
-    end
-    
-    -- Check if this is a "ghost" craft by comparing tracked vs expected capacity
-    os.sleep(0.2)
-    local trackedCrafts = 0
-    for _ in pairs(activeCrafts) do
-        trackedCrafts = trackedCrafts + 1
-    end
-    
-    -- Get current CPU count to see how many are actually running
-    local activeCpus = ME.getCpus()
-    local currentBusyCpus = 0
-    for _, cpu in ipairs(activeCpus) do
-        if cpu.busy then
-            currentBusyCpus = currentBusyCpus + 1
-        end
-    end
-    
-    -- We should have more busy cpus than tracked crafts, if not, this craft likely failed to start
-    if trackedCrafts >= currentBusyCpus - baselineBusyCpus then
-        return nil, "Unable to start craft"
-    end
-    
 
     local craftId = 1
     while activeCrafts[craftId] do
@@ -233,15 +208,6 @@ function autoCraftNeededItems(currentCycle)
         return {}
     end
     
-    -- Get baseline CPU count before starting any crafts
-    local activeCpus = ME.getCpus()
-    local baselineBusyCpus = 0
-    for _, cpu in ipairs(activeCpus) do
-        if cpu.busy then
-            baselineBusyCpus = baselineBusyCpus + 1
-        end
-    end
-    
     colorPrint(colors.yellow, string.format("\n🚀 Auto-crafting %d items below threshold:", #needsList))
     colorPrint(colors.yellow, string.rep("=", 75))
     
@@ -259,7 +225,6 @@ function autoCraftNeededItems(currentCycle)
     end
     
     for i, item in ipairs(needsList) do
-        cleanupCompletedCrafts()
         local alreadyCrafting, craftId = isItemCurrentlyBeingCrafted(item.label)
         
         colorPrint(colors.white, string.format("[%d/%d] Requesting craft: %4dx %s...", i, #needsList, item.batchSize, item.label))
@@ -268,7 +233,7 @@ function autoCraftNeededItems(currentCycle)
             colorPrint(colors.cyan, string.format("  ⏭ SKIPPED → Already crafting #%d", craftId))
             skippedCount = skippedCount + 1
         else
-            local craftId, errorMsg = startCraft(item.label, item.batchSize, baselineBusyCpus, currentCycle)
+            local craftId, errorMsg = startCraft(item.label, item.batchSize, currentCycle)
             if craftId then
                 colorPrint(colors.green, string.format("  ✅ SUCCESS → Craft #%d started", craftId))
                 table.insert(craftIds, craftId)
@@ -290,7 +255,7 @@ function cleanupTimedOutCrafts(currentCycle)
     for craftId, craft in pairs(activeCrafts) do
         local cyclesElapsed = currentCycle - craft.startCycle
         
-        if cyclesElapsed > MAX_CYCLES then
+        if cyclesElapsed > cfg.requestTimeoutCycles then
             local tracker = craft.tracker
             
             -- Check if craft is already done/cancelled before timing out
@@ -350,7 +315,7 @@ function checkCraftStatus(craftId, currentCycle)
     else
         status.status = "IN_PROGRESS"
         local line = string.format("Craft #%d (%-35s)", craftId, craft.itemName:sub(1,35))
-        colorPrint(colors.yellow, string.format("⏳ %s IN PROGRESS (%d/%d cycles)", line, cyclesElapsed, MAX_CYCLES))
+        colorPrint(colors.yellow, string.format("⏳ %s IN PROGRESS (%d/%d cycles)", line, cyclesElapsed, cfg.requestTimeoutCycles))
     end
     
     return status
