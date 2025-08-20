@@ -1,3 +1,5 @@
+Forked from https://github.com/chrisdk1234/OC_AE2_Maintainer
+
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
@@ -7,12 +9,12 @@ wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/config
 
 HOW TO USE:
 
-.\craftables : shows all availible crafts in the AE2 system and gives the option to generate / refresh a config.lua file with all crafts in it with (threshold = defaultThreshold, batchSize = defaultBatchSize).
+craftables : shows all availible crafts in the AE2 system and gives the option to generate / refresh a config.lua file with all crafts in it with (threshold = defaultThreshold, batchSize = defaultBatchSize).
 default values can be edited inside the file itself with .\edit craftables.lua
 
-.\config : contains an array of all maintained items with the form {"item label", threhsold, batchsize}, sleeptimer that dictates how long the program waits until it does another parse, and a shuffle mode used to enable shuffling of the items choosed for crafting, usefull for ensuring even filling of buffers and for infinite crafting
+config : contains an array of all maintained items with the form {"item label", threhsold, batchsize}, sleeptimer that dictates how long the program waits until it does another parse, and a shuffle mode used to enable shuffling of the items choosed for crafting, usefull for ensuring even filling of buffers and for infinite crafting
 
-.\maintainer : executes the program with mentioned settings, will run forever and print out various info to the terminal.
+level_maintainer : executes the program with mentioned settings, will run forever and print out various info to the terminal.
 
 IMPORTANT:
 
@@ -28,9 +30,4 @@ ingame computers parts used (lower quality might work but not guaranteed):
 - Hard Disk Drive tier 2
 - EEPROM with Lua BIOS (craft it ingame)
 - OpenOS floppy (craft it ingame)
-
-SIDE NOTE: This is my first time doing something like this, dont expect perfection :3
-
-Bla 
-
 
