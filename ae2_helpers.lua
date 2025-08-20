@@ -356,7 +356,7 @@ function checkCraftStatus(craftId, currentCycle)
     return status
 end
 
-function checkActiveCrafts()    
+function checkActiveCrafts(currentCycle)    
     local count = 0
     for _ in pairs(activeCrafts) do
         count = count + 1
