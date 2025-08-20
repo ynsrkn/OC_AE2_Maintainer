@@ -1,5 +1,9 @@
 Forked from https://github.com/chrisdk1234/OC_AE2_Maintainer
 
+<img width="1485" height="879" alt="image" src="https://github.com/user-attachments/assets/d585584f-ca4d-4fba-805a-6c51d3cd0123" />
+
+
+
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
