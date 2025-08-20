@@ -160,18 +160,18 @@ function findCraftable(itemName)
 end
 
 
-function startCraft(itemName, amount, currentCycle)
-    amount = amount or 1
-    
+function startCraft(itemName, amount, currentCycle)    
     local craftable = findCraftable(itemName)
-    if not craftable then
-        return nil, "Item not craftable: " .. itemName
-    end
-
     local requestTracker = craftable.request(amount)
-  
-    if not requestTracker or requestTracker.isDone() == nil then
-        return nil, "Craft failed to start"
+    
+    if not requestTracker then
+        return nil, "Craft failed to start (no tracker)"
+    end
+    
+    local isDone, msg = requestTracker.isDone()
+   
+    if isDone == nil or msg ~= nil then
+        return nil, "Craft failed: " .. tostring(msg)
     end
 
     local craftId = 1
@@ -196,7 +196,6 @@ function isItemCurrentlyBeingCrafted(itemName)
             return true, craftId
         end
     end
-    
     return false
 end
 
@@ -269,7 +268,7 @@ function cleanupTimedOutCrafts(currentCycle)
                 if success and result then
                     colorPrint(colors.yellow, string.format("⏰ Timed out craft #%d after %d cycles: %s", craftId, cyclesElapsed - 1, craft.itemName))
                 else
-                    colorPrint(colors.red, string.format("⏰ Failed to cancel timed out craft #%d (error: %s): %s", craftId, tostring(result), craft.itemName))
+                    colorPrint(colors.red, string.format("⏰ Failed to cancel timed out craft #%d: %s", craftId, craft.itemName))
                 end
                 
                 activeCrafts[craftId] = nil
