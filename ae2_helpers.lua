@@ -1,6 +1,7 @@
 local component = require("component")
 local computer  = require("computer")
 local fs        = require("filesystem")
+local craftDelay = 0
 
 colors = {
     reset = "\27[0m",
@@ -214,7 +215,8 @@ function startCraft(itemName, amount, currentCycle)
         tracker = requestTracker,
         startCycle = currentCycle
     }
-    
+    if craftDelay > 0 then os.sleep(craftDelay)
+    end
     return craftId
 end
 
