@@ -1,15 +1,14 @@
+Forked from https://github.com/chrisdk1234/OC_AE2_Maintainer
+
 <img width="1485" height="879" alt="image" src="https://github.com/user-attachments/assets/d585584f-ca4d-4fba-805a-6c51d3cd0123" />
 
-
-
-HUGE shoutout to [@Yunis](https://github.com/ynsrkn) for contributing his improved gui and maintainer functionality to this repo.
 
 
 Basic knowledge of the mod is assumed
 
 download by using: (press INSERT on your keyboard to paste it into the OC terminal)
 ```
-wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/config.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/level_maintainer.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/craftables.lua && wget https://raw.githubusercontent.com/chrisdk1234/OC_AE2_Maintainer/main/ae2_helpers.lua
+wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/config.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/ae2_helpers.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/level_maintainer.lua && wget https://raw.githubusercontent.com/ynsrkn/OC_AE2_Maintainer/main/craftables.lua
 ```
 
 HOW TO USE:
@@ -25,7 +24,7 @@ IMPORTANT:
 
 THE PROGRAM NEEDS AN INTERFACE OR A MECONTROLLER CONNECTED TO AN OC ADAPTER BLOCK.
 
-No need to reboot the oc-computer after updating config.lua anymore
+reboot the (ingame) computer after changing / updating config.lua.
 
 ingame computers parts used (lower quality might work but not guaranteed):
 - GPU tier 3
