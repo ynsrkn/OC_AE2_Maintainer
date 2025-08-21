@@ -215,7 +215,8 @@ function startCraft(itemName, amount, currentCycle)
         tracker = requestTracker,
         startCycle = currentCycle
     }
-    os.sleep(craftDelay)
+    if craftDelay > 0 then os.sleep(craftDelay)
+    end
     return craftId
 end
 
